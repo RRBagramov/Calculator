@@ -46,11 +46,12 @@ string RPN(string inData)//функция для преобразования в
 {
 	stack <char> st;
 	string outData;
-	int numBrOp = 0, numBrCl = 0;///переменные для подсчета количества скобок
+	int numBrOp = 0, numBrCl = 0;//переменные для подсчета количества скобок
 	char temp = ' ';
-	bool minus = false, incorrect = false;//для проверки на унарный минус и неккоректный ввод
+	bool minus = false, incorrectD = false, incorrectO=false;//для проверки на унарный минус и неккоректный ввод
 	for (int i = 0; i <= inData.length(); i++)
 	{
+		
 		if (isSeparator(inData[i]))
 		{
 			continue;
@@ -64,7 +65,7 @@ string RPN(string inData)//функция для преобразования в
 				i++;
 				if (isDot(inData[i]))
 				{
-					incorrect = true;
+					incorrectD = true;
 					outData += '.';
 					i++;
 				}
@@ -98,7 +99,7 @@ string RPN(string inData)//функция для преобразования в
 
 		if (isOperator(inData[i]))
 		{
-			incorrect = true;
+			incorrectO = true;
 			if (minus)
 			{
 				if (inData[i] == '-' && isNum(inData[i + 1]))
@@ -145,17 +146,28 @@ string RPN(string inData)//функция для преобразования в
 			cout << "Incorrect entry. You have entered the letters";
 			exit(1);
 		}
-		if (incorrect)
+		if (incorrectD)//проверка на лишние точки
 		{
-			if (isOperator(inData[i + 1]) || isDot(inData[i + 1]))
+			if (isDot(inData[i + 1]))
 			{
-
 				cout << "Incorrect entry. You have entered the excess sign";
 				exit(1);
 			}
 			else
 			{
-				incorrect = false;
+				incorrectD = false;
+			}
+		}
+		if (incorrectO)//лишние опреаторы
+		{
+			if (isOperator(inData[i + 1]))
+			{
+				cout << "Incorrect entry. You have entered the excess sign";
+				exit(1);
+			}
+			else
+			{
+				incorrectO = false;
 			}
 		}
 	}
@@ -216,7 +228,7 @@ float calculate(string inData)//вычисление результата пос
 			}
 			if (inData[i] == '-')
 			{
-				if (st.size() == 1)///если минус, а в стеке только один элемент, то это унарный минус
+				if (st.size() == 1)//если минус, а в стеке только один элемент, то это унарный минус
 				{
 					double a = st.top()*(-1);
 					st.pop();
@@ -260,7 +272,7 @@ int main()
 {
 	string inData;
 	getline(cin, inData);
-	cout << calculate(RPN(inData));
+	printf("%.2f ", calculate(RPN(inData)));
 	return 0;
 }
 

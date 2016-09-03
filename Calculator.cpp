@@ -1,9 +1,3 @@
-// Calculator2.cpp : Defines the entry point for the console application.
-//
-
-// �alculator.cpp : Defines the entry point for the console application.
-//
-
 #include <iostream>
 #include <stack>
 #include <string>
@@ -31,7 +25,7 @@ bool isBracket(char symbol)
 {
 	return (symbol == '(' || symbol == ')');
 }
-int getRange(char symbol)//������������ ����� ��� ���������� 
+int getRange(char symbol)//присваивания ранга для опреаторов 
 {
 	if (symbol == '-' || symbol == '+')
 	{
@@ -48,13 +42,13 @@ bool isDot(char symbol)
 	return (symbol == '.' || symbol == ',');
 }
 
-string RPN(string inData)//������� ��� �������������� ��������� � ����������� (�������� ��������) ������
+string RPN(string inData)//функция для преобразования выражения в постфиксную (обратную польскую) запись
 {
 	stack <char> st;
 	string outData;
-	int numBrOp = 0, numBrCl = 0;//���������� ��� �������� ���������� ������
+	int numBrOp = 0, numBrCl = 0;///переменные для подсчета количества скобок
 	char temp = ' ';
-	bool minus = false, incorrect = false;//��� �������� �� ������� ����� � ������������ ����
+	bool minus = false, incorrect = false;//для проверки на унарный минус и неккоректный ввод
 	for (int i = 0; i <= inData.length(); i++)
 	{
 		if (isSeparator(inData[i]))
@@ -109,7 +103,7 @@ string RPN(string inData)//������� ��� �������
 			{
 				if (inData[i] == '-' && isNum(inData[i + 1]))
 				{
-					outData += '~';//��������� �������� ������ ��� ����������� ���������
+					outData += '~';//выделение унарного минуса для последующей обработки
 					minus = false;
 					continue;
 				}
@@ -180,7 +174,7 @@ string RPN(string inData)//������� ��� �������
 	}
 	return outData;
 }
-float calculate(string inData)//���������� ���������� ������������ ���������
+float calculate(string inData)//вычисление результата постфиксного выражения
 {
 	stack <double> st;
 
@@ -222,7 +216,7 @@ float calculate(string inData)//���������� ������
 			}
 			if (inData[i] == '-')
 			{
-				if (st.size() == 1)//���� �����, � � ����� ������ ���� �������, �� ��� ������� �����
+				if (st.size() == 1)///если минус, а в стеке только один элемент, то это унарный минус
 				{
 					double a = st.top()*(-1);
 					st.pop();
